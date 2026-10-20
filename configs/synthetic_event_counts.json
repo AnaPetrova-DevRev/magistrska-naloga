@@ -1,0 +1,9 @@
+{
+  "description": "Count reconstructed synthetic events by minute.",
+  "action": "calculate_merged_events_per_minute",
+  "apply_to_all": false,
+  "sync_units": [
+    "test_org_test_system_test_project"
+  ],
+  "parameters": {}
+}

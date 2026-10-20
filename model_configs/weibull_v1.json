@@ -1,0 +1,11 @@
+{
+  "template_name": "weibull_v1",
+  "model_type": "Weibull",
+  "task_type": "time_to_event",
+  "description": "Weibull model for inter-arrival times. Generalises Exponential with a shape parameter controlling hazard trend. Filters out near-zero deltas.",
+  "model_config": {
+    "min_delta": 0,
+    "fix_shape": null
+  },
+  "training_config": {}
+}

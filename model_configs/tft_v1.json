@@ -1,0 +1,18 @@
+{
+  "template_name": "tft_v1",
+  "model_type": "TFT",
+  "model_config": {
+    "horizon": 24,
+    "input_size": 48,
+    "hidden_size": 64,
+    "n_head": 4,
+    "dropout": 0.1,
+    "use_covariates": true
+  },
+  "training_config": {
+    "max_steps": 200,
+    "learning_rate": 0.001,
+    "batch_size": 32,
+    "early_stop_patience": 10
+  }
+}

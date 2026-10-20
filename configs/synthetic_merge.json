@@ -1,0 +1,9 @@
+{
+  "description": "Reconstruct events from the synthetic record states.",
+  "action": "create_merged_dataset",
+  "apply_to_all": false,
+  "sync_units": [
+    "test_org_test_system_test_project"
+  ],
+  "parameters": {}
+}

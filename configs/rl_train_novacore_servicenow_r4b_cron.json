@@ -1,0 +1,85 @@
+{
+  "description": "Train rl agent for novacore_servicenow_novacore_servicenow. Set model_selection.model_id to a user-provided trained model artifact before use.",
+  "action": "train_rl_agent",
+  "apply_to_all": false,
+  "sync_units": [
+    "novacore_servicenow_novacore_servicenow"
+  ],
+  "parameters": {
+    "task_type": "event_rate",
+    "dataset": {
+      "train_ratio": 0.7,
+      "val_ratio": 0.15,
+      "resample_freq": "1min",
+      "covariates": [
+        "hour_of_day",
+        "day_of_week",
+        "is_weekend",
+        "minute_of_hour",
+        "is_cron_window",
+        "is_hourly_cron_window",
+        "minutes_to_next_cron"
+      ],
+      "filters": {}
+    },
+    "agent": {
+      "total_timesteps": "auto",
+      "policy_network": [
+        64,
+        64
+      ]
+    },
+    "env": {
+      "episode_length": 1440,
+      "random_start": true,
+      "prediction_horizon_steps": 10,
+      "observation_features": [
+        "time_since_last_sync",
+        "current_aoi",
+        "covariates",
+        "predictions",
+        "cumulative_empty_syncs"
+      ]
+    },
+    "predictions": {
+      "mode": "precomputed",
+      "prediction_task_type": "time_to_event",
+      "model_selection": {
+        "mode": "explicit",
+        "model_id": "data/novacore/servicenow/novacore_servicenow/models/NHiTS_nhits_tte_v3_20260516T143603_643072"
+      }
+    },
+    "agents": [
+      {
+        "agent_name": "ppo_pred_cron",
+        "agent": {
+          "algorithm": "PPO",
+          "dataset_passes": 3
+        },
+        "reward": {
+          "sync_cost": 1.0,
+          "late_penalty": 2.0,
+          "successful_sync_reward": 0.5,
+          "empty_sync_penalty": 1.0,
+          "aoi_penalty_per_minute": 0.01,
+          "aoi_threshold_minutes": 5.0
+        }
+      },
+      {
+        "agent_name": "a2c_pred_cron",
+        "agent": {
+          "algorithm": "A2C",
+          "dataset_passes": 5
+        },
+        "reward": {
+          "sync_cost": 1.0,
+          "late_penalty": 2.0,
+          "successful_sync_reward": 0.5,
+          "empty_sync_penalty": 1.0,
+          "aoi_penalty_per_minute": 0.01,
+          "aoi_threshold_minutes": 5.0
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "template_name": "cox_ph_v1",
+  "model_type": "CoxPH",
+  "task_type": "time_to_event",
+  "description": "Cox Proportional Hazards model. Semi-parametric survival model that leverages covariates.",
+  "model_config": {
+    "min_delta": 0,
+    "penalizer": 0.01
+  },
+  "training_config": {}
+}

@@ -1,0 +1,19 @@
+{
+  "template_name": "tft_tte_v3",
+  "model_type": "TFT",
+  "description": "TFT TTE with short horizon (12) + covariates. Matches NHiTS v3's successful short-horizon approach.",
+  "model_config": {
+    "horizon": 12,
+    "input_size": 30,
+    "hidden_size": 64,
+    "n_head": 4,
+    "dropout": 0.1,
+    "use_covariates": true
+  },
+  "training_config": {
+    "max_steps": 200,
+    "learning_rate": 0.001,
+    "batch_size": 32,
+    "early_stop_patience": 10
+  }
+}

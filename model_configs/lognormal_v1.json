@@ -1,0 +1,10 @@
+{
+  "template_name": "lognormal_v1",
+  "model_type": "LogNormal",
+  "task_type": "time_to_event",
+  "description": "Log-Normal model for inter-arrival times. Good for right-skewed positive data.",
+  "model_config": {
+    "min_delta": 0
+  },
+  "training_config": {}
+}

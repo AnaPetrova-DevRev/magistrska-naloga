@@ -1,0 +1,10 @@
+{
+  "template_name": "loglogistic_v1",
+  "model_type": "LogLogistic",
+  "task_type": "time_to_event",
+  "description": "Log-Logistic (Fisk) model for inter-arrival times. Popular in survival analysis with closed-form survival function.",
+  "model_config": {
+    "min_delta": 0
+  },
+  "training_config": {}
+}

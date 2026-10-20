@@ -1,0 +1,10 @@
+{
+  "template_name": "loglogistic_v2",
+  "model_type": "LogLogistic",
+  "task_type": "time_to_event",
+  "description": "Log-Logistic with min_delta=1 minute to filter sub-minute deltas and reduce zero-inflation noise.",
+  "model_config": {
+    "min_delta": 1
+  },
+  "training_config": {}
+}

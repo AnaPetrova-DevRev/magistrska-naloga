@@ -1,0 +1,4 @@
+[server]
+# Maximum size of message that can be sent via WebSocket (in MB)
+# Default is 200MB, setting to 1GB (1024MB) to support large dataframes
+maxMessageSize = 1024

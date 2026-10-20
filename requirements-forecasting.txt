@@ -1,0 +1,4 @@
+-r requirements.txt
+neuralforecast>=1.6,<4
+chronos-forecasting>=2,<3
+huggingface-hub>=0.20,<2

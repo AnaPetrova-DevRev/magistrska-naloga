@@ -1,0 +1,14 @@
+{
+  "template_name": "ensemble_nhits_tft_tte_v2",
+  "model_type": "Ensemble",
+  "task_type": "time_to_event",
+  "description": "Weighted ensemble of NHiTS TTE v3 (short horizon, covariates) and TFT TTE v3 (short horizon, covariates). Tests whether combining the two best short-horizon models improves stability.",
+  "model_config": {
+    "base_models": [
+      {"model_type": "NHiTS", "template_name": "nhits_tte_v3"},
+      {"model_type": "TFT", "template_name": "tft_tte_v3"}
+    ],
+    "aggregation": "weighted"
+  },
+  "training_config": {}
+}

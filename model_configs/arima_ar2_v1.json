@@ -1,0 +1,16 @@
+{
+  "template_name": "arima_ar2_v1",
+  "model_type": "ARIMA",
+  "task_type": "event_rate",
+  "description": "ARIMA(2,0,1) model with AR(2) component for capturing longer-term dependencies.",
+  "model_config": {
+    "order": [2, 0, 1],
+    "seasonal_order": null,
+    "enforce_stationarity": true,
+    "enforce_invertibility": true,
+    "trend": "c"
+  },
+  "training_config": {
+    "max_iter": 100
+  }
+}

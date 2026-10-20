@@ -1,0 +1,16 @@
+{
+  "template_name": "arima_small_v1",
+  "model_type": "ARIMA",
+  "task_type": "event_rate",
+  "description": "Simple ARIMA model for small event-rate time series. Minimal configuration suitable for sparse or short data.",
+  "model_config": {
+    "order": [1, 0, 1],
+    "seasonal_order": null,
+    "enforce_stationarity": true,
+    "enforce_invertibility": true,
+    "trend": "c"
+  },
+  "training_config": {
+    "max_iter": 50
+  }
+}

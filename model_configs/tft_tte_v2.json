@@ -1,0 +1,19 @@
+{
+  "template_name": "tft_tte_v2",
+  "model_type": "TFT",
+  "description": "TFT for TTE with larger capacity: hidden_size=128, n_head=8. Horizon=120 for efficient batch prediction.",
+  "model_config": {
+    "horizon": 120,
+    "input_size": 240,
+    "hidden_size": 128,
+    "n_head": 8,
+    "dropout": 0.1,
+    "use_covariates": true
+  },
+  "training_config": {
+    "max_steps": 300,
+    "learning_rate": 0.001,
+    "batch_size": 32,
+    "early_stop_patience": 15
+  }
+}

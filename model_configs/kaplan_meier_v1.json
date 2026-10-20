@@ -1,0 +1,10 @@
+{
+  "template_name": "kaplan_meier_v1",
+  "model_type": "KaplanMeier",
+  "task_type": "time_to_event",
+  "description": "Kaplan-Meier non-parametric survival estimator. Strong baseline that makes no distributional assumptions.",
+  "model_config": {
+    "min_delta": 0
+  },
+  "training_config": {}
+}

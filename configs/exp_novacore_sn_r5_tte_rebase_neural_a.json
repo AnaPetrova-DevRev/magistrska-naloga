@@ -1,0 +1,60 @@
+{
+  "description": "Train models for novacore_servicenow_novacore_servicenow.",
+  "action": "train_models",
+  "apply_to_all": false,
+  "sync_units": [
+    "novacore_servicenow_novacore_servicenow"
+  ],
+  "parameters": {
+    "task_type": "time_to_event",
+    "dataset": {
+      "train_ratio": 0.7,
+      "val_ratio": 0.15,
+      "resample_freq": "1min",
+      "filters": {}
+    },
+    "models": [
+      {
+        "model_type": "NHiTS",
+        "template_name": "nhits_tte_v1"
+      },
+      {
+        "model_type": "NHiTS",
+        "template_name": "nhits_tte_v2"
+      },
+      {
+        "model_type": "NHiTS",
+        "template_name": "nhits_tte_v3"
+      },
+      {
+        "model_type": "TFT",
+        "template_name": "tft_tte_v1"
+      },
+      {
+        "model_type": "TFT",
+        "template_name": "tft_tte_v2"
+      },
+      {
+        "model_type": "TFT",
+        "template_name": "tft_tte_v3"
+      }
+    ],
+    "metrics": [
+      "mae",
+      "rmse",
+      "smape",
+      "median_ae",
+      {
+        "name": "aoi_reward",
+        "params": {
+          "mode": "time_to_event",
+          "sync_threshold": 300,
+          "aoi_threshold_minutes": 5,
+          "sync_cost": 1.0,
+          "late_penalty": 2.0
+        }
+      }
+    ],
+    "cv_folds": 3
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "description": "Train rl agent for novacore_jira_incidents.",
+  "action": "train_rl_agent",
+  "apply_to_all": false,
+  "sync_units": [
+    "novacore_jira_incidents"
+  ],
+  "parameters": {
+    "task_type": "event_rate",
+    "dataset": {
+      "train_ratio": 0.7,
+      "val_ratio": 0.15,
+      "resample_freq": "1min",
+      "covariates": [
+        "hour_of_day",
+        "day_of_week",
+        "is_weekend"
+      ],
+      "filters": {}
+    },
+    "agent": {
+      "total_timesteps": "auto",
+      "policy_network": [
+        64,
+        64
+      ]
+    },
+    "env": {
+      "episode_length": 1440,
+      "prediction_horizon_steps": 10,
+      "random_start": true,
+      "observation_features": [
+        "time_since_last_sync",
+        "current_aoi",
+        "covariates",
+        "cumulative_empty_syncs"
+      ]
+    },
+    "predictions": {
+      "mode": "none"
+    },
+    "agents": [
+      {
+        "agent_name": "a2c_linear_no_thresh",
+        "agent": {
+          "algorithm": "A2C",
+          "dataset_passes": 5
+        },
+        "reward": {
+          "sync_cost": 1.0,
+          "late_penalty": 2.0,
+          "successful_sync_reward": 0.0,
+          "empty_sync_penalty": 1.0,
+          "aoi_penalty_per_minute": 0.02,
+          "aoi_threshold_minutes": 0.0,
+          "aoi_mode": "linear_no_threshold",
+          "item_reward_per_unit": 0.2
+        }
+      },
+      {
+        "agent_name": "a2c_auto_reward",
+        "agent": {
+          "algorithm": "A2C",
+          "dataset_passes": 5
+        },
+        "reward": {
+          "preset": "auto"
+        }
+      },
+      {
+        "agent_name": "a2c_aoi_only",
+        "agent": {
+          "algorithm": "A2C",
+          "dataset_passes": 5
+        },
+        "reward": {
+          "reward_mode": "aoi_only"
+        }
+      }
+    ]
+  }
+}

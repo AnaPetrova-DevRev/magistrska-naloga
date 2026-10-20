@@ -1,0 +1,11 @@
+{
+  "template_name": "zi_weibull_v1",
+  "model_type": "ZI_Weibull",
+  "task_type": "time_to_event",
+  "description": "Zero-inflated Weibull for inter-arrival times with batch arrivals. Mixture of P(immediate) + Weibull for genuine wait times.",
+  "model_config": {
+    "positive_distribution": "Weibull",
+    "zero_threshold": 0.016667
+  },
+  "training_config": {}
+}

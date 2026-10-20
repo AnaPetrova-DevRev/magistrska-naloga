@@ -1,0 +1,16 @@
+{
+  "template_name": "sarimax_15min_v1",
+  "model_type": "ARIMA",
+  "task_type": "event_rate",
+  "description": "SARIMAX for 15-minute resampled event rate data. Seasonal period=4 captures hourly patterns (4 bins per hour).",
+  "model_config": {
+    "order": [1, 1, 1],
+    "seasonal_order": [1, 0, 1, 4],
+    "enforce_stationarity": true,
+    "enforce_invertibility": true,
+    "trend": "c"
+  },
+  "training_config": {
+    "max_iter": 200
+  }
+}

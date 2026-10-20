@@ -1,0 +1,12 @@
+{
+  "template_name": "exponential_v1",
+  "model_type": "Exponential",
+  "task_type": "time_to_event",
+  "description": "Baseline Exponential model for inter-arrival times. Memoryless (constant hazard rate). Filters out near-zero deltas from duplicate/simultaneous events.",
+  "model_config": {
+    "min_delta": 0,
+    "use_windowed_rate": false,
+    "window_size": 100
+  },
+  "training_config": {}
+}

@@ -1,0 +1,19 @@
+{
+  "template_name": "nhits_tte_v3",
+  "model_type": "NHiTS",
+  "task_type": "time_to_event",
+  "description": "NHiTS TTE with short horizon (12) + covariates. V1 horizon=12 worked better than v2 horizon=120, but v1 lacked covariates. This combines the best of both.",
+  "model_config": {
+    "horizon": 12,
+    "input_size": 30,
+    "n_stacks": 3,
+    "dropout": 0.1,
+    "use_covariates": true
+  },
+  "training_config": {
+    "max_steps": 200,
+    "learning_rate": 0.001,
+    "batch_size": 32,
+    "early_stop_patience": 10
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "description": "Calculate merged events per minute for registered synchronization units.",
+  "action": "calculate_merged_events_per_minute",
+  "apply_to_all": true,
+  "parameters": {}
+}

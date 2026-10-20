@@ -1,0 +1,6 @@
+{
+  "description": "Calculate merged time deltas for registered synchronization units.",
+  "action": "calculate_merged_time_deltas",
+  "apply_to_all": true,
+  "parameters": {}
+}

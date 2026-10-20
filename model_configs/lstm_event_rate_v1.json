@@ -1,0 +1,19 @@
+{
+  "template_name": "lstm_event_rate_v1",
+  "model_type": "RNN",
+  "description": "LSTM for event rate forecasting with 30-step input window.",
+  "model_config": {
+    "cell_type": "LSTM",
+    "hidden_size": 64,
+    "num_layers": 2,
+    "input_window": 30,
+    "dropout": 0.1,
+    "use_covariates": false
+  },
+  "training_config": {
+    "max_epochs": 100,
+    "batch_size": 32,
+    "lr": 0.001,
+    "early_stop_patience": 10
+  }
+}

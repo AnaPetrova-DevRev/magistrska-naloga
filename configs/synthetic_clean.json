@@ -1,0 +1,9 @@
+{
+  "description": "Deduplicate invented snapshots within each input chunk.",
+  "action": "clean_data",
+  "apply_to_all": false,
+  "sync_units": [
+    "test_org_test_system_test_project"
+  ],
+  "parameters": {}
+}

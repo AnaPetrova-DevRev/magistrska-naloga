@@ -1,0 +1,10 @@
+{
+  "template_name": "loglogistic_v3",
+  "model_type": "LogLogistic",
+  "task_type": "time_to_event",
+  "description": "Log-Logistic with min_delta=10s. Milder filtering than v2 (60s) \u2014 removes sub-10s noise without discarding too much data.",
+  "model_config": {
+    "min_delta": 0
+  },
+  "training_config": {}
+}

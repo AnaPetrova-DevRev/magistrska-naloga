@@ -1,0 +1,6 @@
+{
+  "description": "Parse json for registered synchronization units.",
+  "action": "parse_json",
+  "apply_to_all": true,
+  "parameters": {}
+}

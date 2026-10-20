@@ -1,0 +1,11 @@
+{
+  "template_name": "zi_lognormal_v1",
+  "model_type": "ZI_LogNormal",
+  "task_type": "time_to_event",
+  "description": "Zero-inflated LogNormal for inter-arrival times with batch arrivals. Mixture of P(immediate) + LogNormal for genuine wait times.",
+  "model_config": {
+    "positive_distribution": "LogNormal",
+    "zero_threshold": 0.016667
+  },
+  "training_config": {}
+}

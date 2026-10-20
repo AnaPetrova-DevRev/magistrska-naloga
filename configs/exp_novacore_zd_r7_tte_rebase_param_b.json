@@ -1,0 +1,55 @@
+{
+  "description": "Train models for novacore_zendesk_novacore_zendesk.",
+  "action": "train_models",
+  "apply_to_all": false,
+  "sync_units": [
+    "novacore_zendesk_novacore_zendesk"
+  ],
+  "parameters": {
+    "task_type": "time_to_event",
+    "dataset": {
+      "train_ratio": 0.7,
+      "val_ratio": 0.15,
+      "filters": {}
+    },
+    "models": [
+      {
+        "model_type": "CoxPH",
+        "template_name": "cox_ph_v1"
+      },
+      {
+        "model_type": "ZI_Gamma",
+        "template_name": "zi_gamma_v1"
+      },
+      {
+        "model_type": "ZI_LogNormal",
+        "template_name": "zi_lognormal_v1"
+      },
+      {
+        "model_type": "ZI_Weibull",
+        "template_name": "zi_weibull_v1"
+      },
+      {
+        "model_type": "Chronos",
+        "template_name": "chronos_tiny_v1"
+      }
+    ],
+    "metrics": [
+      "mae",
+      "rmse",
+      "smape",
+      "median_ae",
+      {
+        "name": "aoi_reward",
+        "params": {
+          "mode": "time_to_event",
+          "sync_threshold": 300,
+          "aoi_threshold_minutes": 5,
+          "sync_cost": 1.0,
+          "late_penalty": 2.0
+        }
+      }
+    ],
+    "cv_folds": 3
+  }
+}

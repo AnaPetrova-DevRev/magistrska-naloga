@@ -1,0 +1,6 @@
+{
+  "description": "Clean data for registered synchronization units.",
+  "action": "clean_data",
+  "apply_to_all": true,
+  "parameters": {}
+}

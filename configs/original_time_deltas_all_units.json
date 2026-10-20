@@ -1,0 +1,6 @@
+{
+  "description": "Calculate original time deltas for registered synchronization units.",
+  "action": "calculate_original_time_deltas",
+  "apply_to_all": true,
+  "parameters": {}
+}

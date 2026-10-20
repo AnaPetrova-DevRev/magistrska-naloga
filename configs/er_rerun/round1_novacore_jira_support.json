@@ -1,0 +1,47 @@
+{
+  "action": "train_models",
+  "sync_units": [
+    "novacore_jira_support"
+  ],
+  "parameters": {
+    "task_type": "event_rate",
+    "dataset": {
+      "train_ratio": 0.7,
+      "val_ratio": 0.15,
+      "resample_freq": "15min",
+      "covariates": [
+        "hour_of_day",
+        "day_of_week",
+        "is_weekend"
+      ]
+    },
+    "models": [
+      {
+        "model_type": "ARIMA",
+        "template_name": "sarimax_15min_v1"
+      },
+      {
+        "model_type": "Chronos",
+        "template_name": "chronos_tiny_v1"
+      },
+      {
+        "model_type": "NHiTS",
+        "template_name": "nhits_er_cov_v1"
+      },
+      {
+        "model_type": "TFT",
+        "template_name": "tft_v1"
+      },
+      {
+        "model_type": "RNN",
+        "template_name": "gru_event_rate_v1"
+      }
+    ],
+    "metrics": [
+      "mae",
+      "rmse",
+      "smape"
+    ],
+    "cv_folds": 3
+  }
+}

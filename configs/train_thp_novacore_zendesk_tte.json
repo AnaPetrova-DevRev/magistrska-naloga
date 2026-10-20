@@ -1,0 +1,29 @@
+{
+  "description": "Train models for novacore_zendesk_novacore_zendesk.",
+  "action": "train_models",
+  "apply_to_all": false,
+  "sync_units": [
+    "novacore_zendesk_novacore_zendesk"
+  ],
+  "parameters": {
+    "task_type": "time_to_event",
+    "dataset": {
+      "train_ratio": 0.7,
+      "val_ratio": 0.15,
+      "filters": {}
+    },
+    "models": [
+      {
+        "model_type": "THP",
+        "template_name": "thp_v1"
+      }
+    ],
+    "metrics": [
+      "mae",
+      "rmse",
+      "median_ae",
+      "mape"
+    ],
+    "cv_folds": 3
+  }
+}

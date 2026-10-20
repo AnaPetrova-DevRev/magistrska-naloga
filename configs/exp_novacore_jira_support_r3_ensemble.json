@@ -1,0 +1,43 @@
+{
+  "description": "Train models for novacore_jira_support.",
+  "action": "train_models",
+  "apply_to_all": false,
+  "sync_units": [
+    "novacore_jira_support"
+  ],
+  "parameters": {
+    "task_type": "time_to_event",
+    "dataset": {
+      "train_ratio": 0.7,
+      "val_ratio": 0.15,
+      "covariates": [
+        "hour_of_day",
+        "day_of_week",
+        "is_weekend"
+      ]
+    },
+    "models": [
+      {
+        "model_type": "Ensemble",
+        "template_name": "ensemble_nhits_tft_tte_v2"
+      }
+    ],
+    "metrics": [
+      "mae",
+      "rmse",
+      "smape",
+      "median_ae",
+      {
+        "name": "aoi_reward",
+        "params": {
+          "mode": "time_to_event",
+          "sync_threshold": 300,
+          "aoi_threshold_minutes": 5,
+          "sync_cost": 1.0,
+          "late_penalty": 2.0
+        }
+      }
+    ],
+    "cv_folds": 3
+  }
+}

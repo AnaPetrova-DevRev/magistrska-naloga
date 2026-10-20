@@ -1,0 +1,29 @@
+{
+  "description": "Train models for brightpath_salesforce_brightpath_salesforce.",
+  "action": "train_models",
+  "apply_to_all": false,
+  "sync_units": [
+    "brightpath_salesforce_brightpath_salesforce"
+  ],
+  "parameters": {
+    "task_type": "time_to_event",
+    "dataset": {
+      "train_ratio": 0.7,
+      "val_ratio": 0.15,
+      "filters": {}
+    },
+    "models": [
+      {
+        "model_type": "THP",
+        "template_name": "thp_v2"
+      }
+    ],
+    "metrics": [
+      "mae",
+      "rmse",
+      "median_ae",
+      "mape"
+    ],
+    "cv_folds": 3
+  }
+}

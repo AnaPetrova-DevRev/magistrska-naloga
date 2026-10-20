@@ -1,0 +1,10 @@
+{
+  "template_name": "gamma_v1",
+  "model_type": "Gamma",
+  "task_type": "time_to_event",
+  "description": "Gamma distribution model for inter-arrival times. Generalises the Exponential distribution.",
+  "model_config": {
+    "min_delta": 0
+  },
+  "training_config": {}
+}

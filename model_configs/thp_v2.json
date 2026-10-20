@@ -1,0 +1,22 @@
+{
+  "template_name": "thp_v2",
+  "model_type": "THP",
+  "model_config": {
+    "d_model": 128,
+    "n_head": 8,
+    "n_layers": 3,
+    "max_seq_len": 512,
+    "mc_samples": 20,
+    "dropout": 0.15,
+    "min_delta_minutes": 0,
+    "max_events": 2000000
+  },
+  "training_config": {
+    "max_epochs": 150,
+    "batch_size": 32,
+    "lr": 0.00005,
+    "early_stop_patience": 20,
+    "max_steps_per_epoch": 1500,
+    "grad_clip": 1.0
+  }
+}

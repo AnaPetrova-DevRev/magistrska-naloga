@@ -1,0 +1,50 @@
+{
+  "description": "Evaluate sync policy for test_org_test_system_test_project.",
+  "action": "evaluate_sync_policy",
+  "apply_to_all": false,
+  "sync_units": [
+    "test_org_test_system_test_project"
+  ],
+  "parameters": {
+    "task_type": "event_rate",
+    "dataset": {
+      "train_ratio": 1.0,
+      "val_ratio": 0.0,
+      "resample_freq": "1min",
+      "covariates": [
+        "hour_of_day",
+        "day_of_week",
+        "is_weekend"
+      ],
+      "filters": {}
+    },
+    "policy_type": "heuristic",
+    "heuristic": {
+      "name": "periodic",
+      "interval_minutes": 5
+    },
+    "policy_name": "periodic_5min_baseline",
+    "env": {
+      "prediction_horizon_steps": 60,
+      "observation_features": [
+        "time_since_last_sync",
+        "current_aoi",
+        "predictions",
+        "covariates",
+        "items_synced_last",
+        "cumulative_empty_syncs"
+      ]
+    },
+    "reward": {
+      "sync_cost": 1.0,
+      "late_penalty": 2.0,
+      "successful_sync_reward": 0.5,
+      "empty_sync_penalty": 1.0,
+      "aoi_penalty_per_minute": 0.01,
+      "aoi_threshold_minutes": 5.0
+    },
+    "predictions": {
+      "mode": "none"
+    }
+  }
+}

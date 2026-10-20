@@ -1,0 +1,9 @@
+{
+  "description": "Calculate original timestamp deltas for the synthetic fixture.",
+  "action": "calculate_original_time_deltas",
+  "apply_to_all": false,
+  "sync_units": [
+    "test_org_test_system_test_project"
+  ],
+  "parameters": {}
+}

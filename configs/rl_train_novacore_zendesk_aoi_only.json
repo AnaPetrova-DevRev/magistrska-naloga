@@ -1,0 +1,55 @@
+{
+  "description": "Train rl agent for novacore_zendesk_novacore_zendesk.",
+  "action": "train_rl_agent",
+  "apply_to_all": false,
+  "sync_units": [
+    "novacore_zendesk_novacore_zendesk"
+  ],
+  "parameters": {
+    "task_type": "event_rate",
+    "dataset": {
+      "train_ratio": 0.7,
+      "val_ratio": 0.15,
+      "start_time": "2022-01-01T00:00:00Z",
+      "resample_freq": "1min",
+      "covariates": [
+        "hour_of_day",
+        "day_of_week",
+        "is_weekend"
+      ],
+      "filters": {}
+    },
+    "agent": {
+      "total_timesteps": "auto",
+      "policy_network": [
+        64,
+        64
+      ]
+    },
+    "env": {
+      "episode_length": 1440,
+      "random_start": true,
+      "observation_features": [
+        "time_since_last_sync",
+        "current_aoi",
+        "covariates",
+        "cumulative_empty_syncs"
+      ]
+    },
+    "predictions": {
+      "mode": "none"
+    },
+    "agents": [
+      {
+        "agent_name": "a2c_aoi_only",
+        "agent": {
+          "algorithm": "A2C",
+          "dataset_passes": 5
+        },
+        "reward": {
+          "reward_mode": "aoi_only"
+        }
+      }
+    ]
+  }
+}

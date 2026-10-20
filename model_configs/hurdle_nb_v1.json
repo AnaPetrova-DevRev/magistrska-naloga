@@ -1,0 +1,10 @@
+{
+  "template_name": "hurdle_nb_v1",
+  "model_type": "HurdleNB",
+  "task_type": "event_rate",
+  "description": "Hurdle Negative Binomial for zero-inflated event rate data. Stage 1: logistic regression with temporal covariates for P(events > 0). Stage 2: NegBin for count magnitude.",
+  "model_config": {
+    "binary_regularization": 0.01
+  },
+  "training_config": {}
+}

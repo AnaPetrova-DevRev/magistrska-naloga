@@ -1,0 +1,136 @@
+{
+  "description": "Train rl agent for novacore_servicenow_novacore_servicenow. Set model_selection.model_id to a user-provided trained model artifact before use.",
+  "action": "train_rl_agent",
+  "apply_to_all": false,
+  "sync_units": [
+    "novacore_servicenow_novacore_servicenow"
+  ],
+  "parameters": {
+    "task_type": "event_rate",
+    "dataset": {
+      "train_ratio": 0.7,
+      "val_ratio": 0.15,
+      "resample_freq": "1min",
+      "covariates": [
+        "hour_of_day",
+        "day_of_week",
+        "is_weekend"
+      ],
+      "filters": {}
+    },
+    "agent": {
+      "total_timesteps": 200000,
+      "validation_evaluations": 20,
+      "policy_network": [
+        64,
+        64
+      ]
+    },
+    "env": {
+      "episode_length": 1440,
+      "validation_episode_length": 1440,
+      "validation_window_count": 3,
+      "bootstrap_history_steps": 1500,
+      "prediction_horizon_steps": 10,
+      "random_start": true,
+      "observation_features": [
+        "time_since_last_sync",
+        "current_aoi",
+        "covariates",
+        "predictions",
+        "cumulative_empty_syncs"
+      ]
+    },
+    "reward": {
+      "aoi_penalty_per_minute": 0.01,
+      "aoi_threshold_minutes": 5.0,
+      "empty_sync_penalty": 1.0,
+      "late_penalty": 2.0,
+      "successful_sync_reward": 0.5,
+      "sync_cost": 1.0
+    },
+    "agents": [
+      {
+        "agent_name": "a2c_tte_masked_v1_ablation_seed7",
+        "agent": {
+          "algorithm": "A2C",
+          "seed": 7
+        },
+        "predictions": {
+          "mode": "masked",
+          "prediction_task_type": "time_to_event"
+        }
+      },
+      {
+        "agent_name": "a2c_tte_action_aware_v1_ablation_seed7",
+        "agent": {
+          "algorithm": "A2C",
+          "seed": 7
+        },
+        "predictions": {
+          "mode": "action_aware",
+          "prediction_task_type": "time_to_event",
+          "trajectory_horizon_steps": 60,
+          "model_selection": {
+            "mode": "explicit",
+            "model_id": "data/novacore/servicenow/novacore_servicenow/models/NHiTS_nhits_tte_v3_20260516T143603_643072"
+          }
+        }
+      },
+      {
+        "agent_name": "a2c_tte_masked_v1_ablation_seed42",
+        "agent": {
+          "algorithm": "A2C",
+          "seed": 42
+        },
+        "predictions": {
+          "mode": "masked",
+          "prediction_task_type": "time_to_event"
+        }
+      },
+      {
+        "agent_name": "a2c_tte_action_aware_v1_ablation_seed42",
+        "agent": {
+          "algorithm": "A2C",
+          "seed": 42
+        },
+        "predictions": {
+          "mode": "action_aware",
+          "prediction_task_type": "time_to_event",
+          "trajectory_horizon_steps": 60,
+          "model_selection": {
+            "mode": "explicit",
+            "model_id": "data/novacore/servicenow/novacore_servicenow/models/NHiTS_nhits_tte_v3_20260516T143603_643072"
+          }
+        }
+      },
+      {
+        "agent_name": "a2c_tte_masked_v1_ablation_seed123",
+        "agent": {
+          "algorithm": "A2C",
+          "seed": 123
+        },
+        "predictions": {
+          "mode": "masked",
+          "prediction_task_type": "time_to_event"
+        }
+      },
+      {
+        "agent_name": "a2c_tte_action_aware_v1_ablation_seed123",
+        "agent": {
+          "algorithm": "A2C",
+          "seed": 123
+        },
+        "predictions": {
+          "mode": "action_aware",
+          "prediction_task_type": "time_to_event",
+          "trajectory_horizon_steps": 60,
+          "model_selection": {
+            "mode": "explicit",
+            "model_id": "data/novacore/servicenow/novacore_servicenow/models/NHiTS_nhits_tte_v3_20260516T143603_643072"
+          }
+        }
+      }
+    ]
+  }
+}

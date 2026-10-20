@@ -1,0 +1,18 @@
+{
+  "template_name": "nhits_tte_v2",
+  "model_type": "NHiTS",
+  "description": "NHiTS for TTE with covariates enabled. Horizon=120 for efficient batch prediction on large datasets.",
+  "model_config": {
+    "horizon": 120,
+    "input_size": 240,
+    "n_stacks": 3,
+    "dropout": 0.1,
+    "use_covariates": true
+  },
+  "training_config": {
+    "max_steps": 200,
+    "learning_rate": 0.001,
+    "batch_size": 32,
+    "early_stop_patience": 10
+  }
+}

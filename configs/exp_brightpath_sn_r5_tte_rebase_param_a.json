@@ -1,0 +1,59 @@
+{
+  "description": "Train models for brightpath_servicenow_brightpath_servicenow.",
+  "action": "train_models",
+  "apply_to_all": false,
+  "sync_units": [
+    "brightpath_servicenow_brightpath_servicenow"
+  ],
+  "parameters": {
+    "task_type": "time_to_event",
+    "dataset": {
+      "train_ratio": 0.7,
+      "val_ratio": 0.15,
+      "filters": {}
+    },
+    "models": [
+      {
+        "model_type": "Exponential",
+        "template_name": "exponential_v1"
+      },
+      {
+        "model_type": "Weibull",
+        "template_name": "weibull_v1"
+      },
+      {
+        "model_type": "Gamma",
+        "template_name": "gamma_v1"
+      },
+      {
+        "model_type": "KaplanMeier",
+        "template_name": "kaplan_meier_v1"
+      },
+      {
+        "model_type": "LogLogistic",
+        "template_name": "loglogistic_v1"
+      },
+      {
+        "model_type": "LogNormal",
+        "template_name": "lognormal_v1"
+      }
+    ],
+    "metrics": [
+      "mae",
+      "rmse",
+      "smape",
+      "median_ae",
+      {
+        "name": "aoi_reward",
+        "params": {
+          "mode": "time_to_event",
+          "sync_threshold": 300,
+          "aoi_threshold_minutes": 5,
+          "sync_cost": 1.0,
+          "late_penalty": 2.0
+        }
+      }
+    ],
+    "cv_folds": 3
+  }
+}
