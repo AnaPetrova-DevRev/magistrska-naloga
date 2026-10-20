@@ -10,7 +10,7 @@ import glob
 import hashlib
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any
 
 import numpy as np
@@ -1046,18 +1046,18 @@ def load_or_compute_rescored(
 
 
 def sidebar_date_filter(evaluations: dict[str, list[dict]]) -> dict[str, list[dict]]:
-    """Sidebar date range filter — returns filtered evaluations."""
+    """Filter evaluations by complete UTC calendar days in the sidebar."""
     st.sidebar.header("Filters")
 
     all_starts, all_ends = [], []
     for evals in evaluations.values():
         for e in evals:
             if e["eval_start"]:
-                t = pd.Timestamp(e["eval_start"])
+                t = pd.to_datetime(e["eval_start"], utc=True)
                 if not pd.isna(t):
                     all_starts.append(t)
             if e["eval_end"]:
-                t = pd.Timestamp(e["eval_end"])
+                t = pd.to_datetime(e["eval_end"], utc=True)
                 if not pd.isna(t):
                     all_ends.append(t)
 
@@ -1077,7 +1077,8 @@ def sidebar_date_filter(evaluations: dict[str, list[dict]]) -> dict[str, list[di
     if not isinstance(date_range, tuple) or len(date_range) != 2:
         return evaluations
 
-    filter_start, filter_end = pd.Timestamp(date_range[0]), pd.Timestamp(date_range[1])
+    filter_start = pd.Timestamp(date_range[0], tz="UTC")
+    filter_end = pd.Timestamp(date_range[1] + timedelta(days=1), tz="UTC")
 
     filtered = {}
     for su, evals in evaluations.items():
@@ -1086,9 +1087,9 @@ def sidebar_date_filter(evaluations: dict[str, list[dict]]) -> dict[str, list[di
             if not e["eval_start"] or not e["eval_end"]:
                 kept.append(e)
                 continue
-            es = pd.Timestamp(e["eval_start"])
-            ee = pd.Timestamp(e["eval_end"])
-            if es <= filter_end and ee >= filter_start:
+            es = pd.to_datetime(e["eval_start"], utc=True)
+            ee = pd.to_datetime(e["eval_end"], utc=True)
+            if es < filter_end and ee >= filter_start:
                 kept.append(e)
         if kept:
             filtered[su] = kept
