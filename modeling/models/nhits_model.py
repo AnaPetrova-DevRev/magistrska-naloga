@@ -219,6 +219,7 @@ class NHiTSForecastModel(BaseModel):
         batch = {
             "temporal": temporal,
             "temporal_cols": temporal_index,
+            "y_idx": temporal_cols.index("y"),
             "static": None,
             "static_cols": None,
         }
@@ -487,7 +488,7 @@ class NHiTSForecastModel(BaseModel):
                     "ds": futr_timestamps,
                     **future_covariates,
                 })
-            pred_df = self._nf.predict(df=ctx_df, futr_df=futr_df, sort_df=False)
+            pred_df = self._nf.predict(df=ctx_df, futr_df=futr_df)
             native_forecast = pred_df["NHITS"].values
 
         step_minutes = self._freq_to_minutes(self._freq)
