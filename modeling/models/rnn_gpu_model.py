@@ -183,6 +183,11 @@ class RNNGPUForecastModel(BaseModel):
         arrays = [np.array(dataset.covariates[name]) for name in cov_names]
         return np.column_stack(arrays)
 
+    def _get_future_covariates(
+        self, dataset: Dataset, timestamps: Sequence[datetime],
+    ) -> np.ndarray:
+        return RNNForecastModel._get_future_covariates(self, dataset, timestamps)
+
     def fit(self, dataset: Dataset) -> Dict[str, Any]:
         import torch
         import torch.nn as nn
@@ -341,19 +346,34 @@ class RNNGPUForecastModel(BaseModel):
         window_size = self.model_config.get("input_window", 30)
         n_steps = horizon_minutes
 
+        if reference_time is None:
+            last_ts = dataset.timestamps[-1] if dataset.timestamps else datetime.now(UTC)
+            reference_time = last_ts + timedelta(minutes=1)
+        timestamps = [reference_time + timedelta(minutes=i) for i in range(n_steps)]
+        covariates_arr = self._get_covariates_array(dataset)
+        covariate_context = None
+        future_covariates = None
+        if covariates_arr is not None:
+            covariate_context = list(covariates_arr[-window_size:])
+            future_covariates = self._get_future_covariates(dataset, timestamps)
+
         # Autoregressive forecasting
         context = list(target_norm[-window_size:])
         point_forecasts = []
 
         self._model.eval()
         with torch.no_grad():
-            for _ in range(n_steps):
+            for step in range(n_steps):
                 window = np.array(context[-window_size:]).reshape(-1, 1)
+                if covariate_context is not None:
+                    window = np.column_stack([window, covariate_context[-window_size:]])
                 x = torch.tensor(window, dtype=torch.float32).unsqueeze(0).to(device)
                 pred_norm = self._model(x).item()
                 pred = pred_norm * self._target_std + self._target_mean
                 point_forecasts.append(max(pred, 0.0))
                 context.append(pred_norm)
+                if covariate_context is not None:
+                    covariate_context.append(future_covariates[step])
 
         point_forecast = np.array(point_forecasts)
         std = self._target_std
@@ -361,11 +381,6 @@ class RNNGPUForecastModel(BaseModel):
         upper = point_forecast + 1.645 * std
         uncertainties = np.full(n_steps, std)
 
-        if reference_time is None:
-            last_ts = dataset.timestamps[-1] if dataset.timestamps else datetime.now(UTC)
-            reference_time = last_ts + timedelta(minutes=1)
-
-        timestamps = [reference_time + timedelta(minutes=i) for i in range(n_steps)]
         points = self._create_prediction_points(
             timestamps, point_forecast, lower, upper, uncertainties,
         )
