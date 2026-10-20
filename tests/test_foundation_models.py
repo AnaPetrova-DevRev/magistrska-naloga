@@ -117,6 +117,7 @@ class TestNHiTSFastInference(unittest.TestCase):
                 self.loss = SimpleNamespace(output_names=[""])
                 self._test_size = 0
                 self.seen_temporal = None
+                self.seen_y_idx = None
 
             @property
             def device(self):
@@ -129,13 +130,14 @@ class TestNHiTSFastInference(unittest.TestCase):
                 self._test_size = value
 
             def predict_step(self, batch, batch_idx):
+                self.seen_y_idx = batch["y_idx"]
                 self.seen_temporal = batch["temporal"].detach().cpu().numpy()
                 return torch.tensor([[[11.0], [12.0]]])
 
         native_model = FakeModel()
         training_dataset = SimpleNamespace(
             temporal_cols=pd.Index([
-                "y", "hour_of_day", "available_mask",
+                "hour_of_day", "available_mask", "y",
             ]),
             scalers_=None,
             static=None,
@@ -152,10 +154,39 @@ class TestNHiTSFastInference(unittest.TestCase):
         )
 
         np.testing.assert_allclose(result, [11.0, 12.0])
+        self.assertEqual(native_model.seen_y_idx, 2)
         temporal = native_model.seen_temporal[0]
-        np.testing.assert_allclose(temporal[0], [2, 3, 4, 0, 0])
-        np.testing.assert_allclose(temporal[1], [20, 30, 40, 50, 60])
-        np.testing.assert_allclose(temporal[2], [1, 1, 1, 1, 1])
+        np.testing.assert_allclose(temporal[0], [20, 30, 40, 50, 60])
+        np.testing.assert_allclose(temporal[1], [1, 1, 1, 1, 1])
+        np.testing.assert_allclose(temporal[2], [2, 3, 4, 0, 0])
+
+    def test_public_fallback_uses_supported_predict_arguments(self):
+        import pandas as pd
+        from modeling.models.nhits_model import NHiTSForecastModel
+
+        class PublicForecast:
+            def predict(self, df, futr_df):
+                self.history = df
+                self.future = futr_df
+                return pd.DataFrame({"NHITS": [11.0, 12.0]})
+
+        dataset = _make_event_rate_dataset()
+        native_forecast = PublicForecast()
+        model = NHiTSForecastModel(
+            TaskType.EVENT_RATE, {"horizon": 2, "input_size": 3}, {},
+        )
+        model._nf = native_forecast
+        model._freq = "1h"
+        model._train_target = np.asarray(dataset.events_per_minute)
+        model._is_fitted = True
+
+        forecast = model.forecast(dataset, horizon_minutes=2)
+
+        self.assertEqual(len(forecast.points), 2)
+        self.assertIsNone(native_forecast.future)
+        np.testing.assert_allclose(
+            native_forecast.history["y"], dataset.events_per_minute,
+        )
 
 
 # Chronos
